@@ -18,3 +18,4 @@ class GymReviewForm(forms.ModelForm):
     class Meta:
         models = GymReview
         fields = "__all__"
+        

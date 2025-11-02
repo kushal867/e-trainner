@@ -67,14 +67,14 @@ def product_create(request):
 #Product edit
 def product_edit(request, id):
     gyms = Product.objects.get(id=id)
-    form = ProductForm(instance=gyms)
+    form = ProductForm(request.POST, instance=gyms)
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('product_list')
         else:
-            form = ProductForm()
+            form = ProductForm(instance=gyms)
             return render(request, "product_edit.html", {"form":form})
 
 #product_delete

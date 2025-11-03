@@ -1,83 +1,89 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Gym, Product
-from .forms import GymForm, ProductForm
+from django.shortcuts import render, redirect
+from .models import Gym, Product, Gym
+from .forms import GymForm, ProductForm, GymReviewForm
+
 
 # List all gyms
 def gym_list(request):
     gyms = Gym.objects.all()
     context = {
-        "gym":gyms
+        "gyms": gyms
     }
     return render(request, "index.html", context)
 
-from django.shortcuts import render, redirect
-from .forms import GymForm
 
+# Create a new gym
 def gym_create(request):
     if request.method == 'POST':
         form = GymForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('gym_list')  # use the URL pattern name, not the view
+            return redirect('gym_list')
     else:
         form = GymForm()
+    return render(request, "gym_create.html", {"form": form})
 
-    return render(request, "gym_create.html", {'form': form})
 
-
+# Edit an existing gym
 def gym_edit(request, id):
-    gyms = Gym.objects.get(id=id)
+    gym = Gym.objects.get(id=id)
     if request.method == 'POST':
-        form = GymForm(request.POST, instance=gyms)
+        form = GymForm(request.POST, instance=gym)
         if form.is_valid():
             form.save()
             return redirect('gym_list')
     else:
-        form = GymForm(instance=gyms)
+        form = GymForm(instance=gym)
     return render(request, "gym_edit.html", {"form": form})
 
 
-#for delete
+# Delete a gym
 def gym_delete(request, id):
-    gyms = Gym.objects.get(id=id)
-    gyms.delete(request)
-    return redirect(gym_list)
+    gym = Gym.objects.get(id=id)
+    gym.delete()
+    return redirect('gym_list')
 
 
-#for product
 
+
+# List all products
 def product_list(request):
-    gyms = Product.objects.all()
+    products = Product.objects.all()
     context = {
-       "gym":gyms
+        "products": products
     }
-    return render(request, "index.html", context)
+    return render(request, "product_list.html", context)
 
-#create_product
 
+# Create a new product
 def product_create(request):
-    if request.method == 'POST':
-        form = ProductForm(request.POST)
-        form.save()
-        return redirect('product_list')
-    else:
-        form = ProductForm()
-        return render(request, "create_product.html", {"form":form})
-
-#Product edit
-def product_edit(request, id):
-    gyms = Product.objects.get(id=id)
-    form = ProductForm(request.POST, instance=gyms)
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('product_list')
-        else:
-            form = ProductForm(instance=gyms)
-            return render(request, "product_edit.html", {"form":form})
+    else:
+        form = ProductForm()
+    return render(request, "product_create.html", {"form": form})
 
-#product_delete
+
+# Edit 
+def product_edit(request, id):
+    product = Product.objects.get(id=id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product_list')
+    else:
+        form = ProductForm(instance=product)
+    return render(request, "product_edit.html", {"form": form})
+
+
+# Delete a product
 def product_delete(request, id):
-    gyms = Product.objects.get(id=id)
-    gyms.delete(request)
+    product = Product.objects.get(id=id)
+    product.delete()
+    return redirect('product_list')
+
+#

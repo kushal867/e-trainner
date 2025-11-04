@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Gym, Product, Gym
+from .models import Gym, Product, Gym, GymReview
 from .forms import GymForm, ProductForm, GymReviewForm
 
 
@@ -86,4 +86,46 @@ def product_delete(request, id):
     product.delete()
     return redirect('product_list')
 
-#
+
+
+
+
+#Review
+def gym_revirew(request):
+    gyms = GymReview.objects.all()
+    context = {
+        "gym":gyms
+    }
+    return render(request, "GymReview_list.html", context)
+
+#gym_create
+def gymReview_create(request):
+    if request.method == 'POST':
+        form = GymReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("gymRevire_list")
+        else:
+            form = GymReviewForm()
+            return render(request, "GymReview_create.html", {"form":form})
+        
+
+#gymReview_edit
+def gymReview_edit(request, id):
+    gyms = GymReview.objects.get(id=id)
+    form = GymReviewForm(request.POST, instance=gyms)
+    if request.method == 'POST':
+        form = GymReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("gymReview")
+        else:
+            form = GymReviewForm()
+            return render(request, "gymReview_eit.html", {"form":form})
+
+
+#GymReview_delete
+def gymReview_delete(request, id):
+    gyms = GymReview.objects.get(id=id)
+    gyms.delete()
+    return redirect("Gym_list.html")

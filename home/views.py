@@ -91,7 +91,7 @@ def product_delete(request, id):
 
 
 #Review
-def gym_revirew(request):
+def gym_review_list(request):
     gyms = GymReview.objects.all()
     context = {
         "gym":gyms
@@ -104,24 +104,25 @@ def gymReview_create(request):
         form = GymReviewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("gymRevire_list")
-        else:
-            form = GymReviewForm()
-            return render(request, "GymReview_create.html", {"form":form})
+            return redirect("gymReview_list")
+    else:
+        form = GymReviewForm()
+    return render(request, "GymReview_create.html", {"form": form})
+
         
 
 #gymReview_edit
 def gymReview_edit(request, id):
-    gyms = GymReview.objects.get(id=id)
-    form = GymReviewForm(request.POST, instance=gyms)
+    gym_review = GymReview.objects.get(id=id)
     if request.method == 'POST':
-        form = GymReviewForm(request.POST)
+        form = GymReviewForm(request.POST, instance=gym_review)
         if form.is_valid():
             form.save()
-            return redirect("gymReview")
-        else:
-            form = GymReviewForm()
-            return render(request, "gymReview_eit.html", {"form":form})
+            return redirect("gymReview_list")
+    else:
+        form = GymReviewForm(instance=gym_review)
+    return render(request, "gymReview_edit.html", {"form": form})
+
 
 
 #GymReview_delete
@@ -129,3 +130,4 @@ def gymReview_delete(request, id):
     gyms = GymReview.objects.get(id=id)
     gyms.delete()
     return redirect("Gym_list.html")
+

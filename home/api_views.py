@@ -1,17 +1,15 @@
 from rest_framework import viewsets
 from .models import Gym, Product, GymReview
-from serializers import GymSerializer, PorductSeraializer, GymReviewSerializer
+from .serializers import GymSerializer, ProductSerializer, GymReviewSerializer
 
 class GymViewSet(viewsets.ModelViewSet):
     queryset = Gym.objects.all()
     serializer_class = GymSerializer
-    
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
-    serializer_class = PorductSeraializer
+    serializer_class = ProductSerializer
 
-class Gymviewset(viewsets.ModelViewSet):
-    queryclass = GymReview.objects.all()
+class GymReviewViewSet(viewsets.ModelViewSet):
+    queryset = GymReview.objects.all()
     serializer_class = GymReviewSerializer
-    

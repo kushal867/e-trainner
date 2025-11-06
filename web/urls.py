@@ -17,7 +17,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-# Correct import
 from home.api_views import GymViewSet, ProductViewSet, GymReviewViewSet
 
 router = DefaultRouter()
@@ -27,7 +26,8 @@ router.register(r'gym-reviews', GymReviewViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('home.urls')),
+    path('home/', include('home.urls')),  
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
+    path('', include("user.urls")),  # login as default page
 ]

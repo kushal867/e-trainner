@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% block title %}{{ form.instance.id|yesno:"Edit
+Review,Add Review" }}{% endblock %} {% block content %}
+<div class="card shadow p-4">
+  <h3 class="mb-3">
+    {{ form.instance.id|yesno:"Edit Review,Add New Review" }}
+  </h3>
+  <form method="POST">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'gymReview_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

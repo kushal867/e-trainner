@@ -29,5 +29,6 @@ urlpatterns = [
     path('home/', include('home.urls')),  
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
-    path('', include("user.urls")),  # login as default page
+    path('', include("user.urls")), # login as default page
+     path('gym_backend/', include('gym_backend.urls')),
 ]

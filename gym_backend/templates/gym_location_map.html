@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block title %}Gym Locations{% endblock %} {% block
+content %}
+<h2 class="text-center mt-3">🏋️‍♂️ Gym Locations Map</h2>
+
+<div
+  id="map"
+  style="height: 600px; border-radius: 10px; margin-top: 20px"
+></div>
+
+<!-- Leaflet CSS and JS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  const map = L.map('map').setView([27.7172, 85.3240], 12);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  const gyms = {{ gyms|safe }};
+  gyms.forEach(gym => {
+    if (gym.latitude && gym.longitude) {
+      L.marker([gym.latitude, gym.longitude])
+        .addTo(map)
+        .bindPopup(`<b>${gym.name}</b><br>${gym.address || ''}<br>${gym.city || ''}`);
+    }
+  });
+</script>
+{% endblock %}

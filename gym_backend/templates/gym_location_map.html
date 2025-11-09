@@ -7,7 +7,7 @@ extra_head %}
 {% endblock %} {% block content %}
 <div class="card">
   <div class="card-header">
-    <h2 class="mb-0"><i class="bi bi-geo-alt-fill"></i> Gym Locations Map</h2>
+    <h2>Gym Locations Map</h2>
   </div>
   <div class="card-body p-0">
     <div id="map" style="height: 600px; width: 100%"></div>
@@ -16,32 +16,20 @@ extra_head %}
 {% endblock %} {% block extra_scripts %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  var map = L.map("map").setView([27.7172, 85.324], 12);
+  // Initialize the map
+  var map = L.map('map').setView([27.7172, 85.324], 12);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "&copy; OpenStreetMap contributors",
+  // Add OpenStreetMap tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-  var gyms = JSON.parse("{{ gyms_json|escapejs }}");
-
-  for (var i = 0; i < gyms.length; i++) {
-    var gym = gyms[i];
-    var fields = gym.fields;
-
-    if (fields.latitude && fields.longitude) {
-      var marker = L.marker([fields.latitude, fields.longitude]).addTo(map);
-
-      var popupContent = "<strong>" + fields.name + "</strong><br>";
-      if (fields.address) {
-        popupContent += fields.address + "<br>";
-      }
-      if (fields.city) {
-        popupContent += fields.city;
-      }
-
-      marker.bindPopup(popupContent);
-    }
-  }
+  // Add gym markers (you can add your gym data here)
+  {% for gym in gyms %}
+  L.marker([{{ gym.latitude }}, {{ gym.longitude }}])
+      .addTo(map)
+      .bindPopup('<b>{{ gym.name }}</b><br>{{ gym.address }}');
+  {% endfor %}
 </script>
 {% endblock %}

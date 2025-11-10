@@ -4,19 +4,26 @@ extra_head %}
   rel="stylesheet"
   href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
+<style>
+  /* Optional: Make map fully responsive */
+  #map {
+    height: 600px;
+    width: 100%;
+  }
+</style>
 {% endblock %} {% block content %}
 <div class="card">
   <div class="card-header">
     <h2>Gym Locations Map</h2>
   </div>
   <div class="card-body p-0">
-    <div id="map" style="height: 600px; width: 100%"></div>
+    <div id="map"></div>
   </div>
 </div>
 {% endblock %} {% block extra_scripts %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  // Initialize the map
+  // Initialize the map centered on Kathmandu
   var map = L.map('map').setView([27.7172, 85.324], 12);
 
   // Add OpenStreetMap tiles
@@ -25,11 +32,11 @@ extra_head %}
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-  // Add gym markers (you can add your gym data here)
+  // Add gym markers dynamically from Django context
   {% for gym in gyms %}
-  L.marker([{{ gym.latitude }}, {{ gym.longitude }}])
+    L.marker([{{ gym.latitude }}, {{ gym.longitude }}])
       .addTo(map)
-      .bindPopup('<b>{{ gym.name }}</b><br>{{ gym.address }}');
+      .bindPopup('<b>{{ gym.name|escapejs }}</b><br>{{ gym.address|escapejs }}');
   {% endfor %}
 </script>
 {% endblock %}

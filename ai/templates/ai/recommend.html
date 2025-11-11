@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %}Gym Recommendations{% endblock %} {%
+block content %}
+<h2>Gym Recommendations</h2>
+<form method="get" class="mb-3">
+  <input
+    type="text"
+    name="input"
+    value="{{ user_input }}"
+    placeholder="Enter your preferences"
+    class="form-control mb-2"
+  />
+  <button type="submit" class="btn btn-primary">Get Recommendations</button>
+</form>
+
+{% if answer %}
+<div class="card mt-3 p-3">
+  <pre>{{ answer }}</pre>
+</div>
+{% endif %} {% endblock %}

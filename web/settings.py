@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'user',
     'gym_backend',
+    'ai',
     
 ]
 

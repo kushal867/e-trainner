@@ -31,4 +31,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('', include("user.urls")), # login as default page
      path('gym_backend/', include('gym_backend.urls')),
+     path('ai/', include('ai.urls')),
+
 ]

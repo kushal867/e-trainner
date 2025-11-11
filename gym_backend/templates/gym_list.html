@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% block title %}Gym List{% endblock %} {% block
+content %}
+<h2>All Gyms</h2>
+<table class="table table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for gym in gyms %}
+    <tr>
+      <td>{{ gym.name }}</td>
+      <td>{{ gym.address }}</td>
+      <td>{{ gym.city }}</td>
+      <td>{{ gym.state }}</td>
+      <td>{{ gym.country }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

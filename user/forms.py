@@ -1,19 +1,47 @@
 from django import forms
-from django.contrib.auth.models import User
-
-# forms.ModelForm ==> model define
+from django.contrib.auth import authenticate
 
 class LoginForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Username"}, ))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder":"Password"}))
-
+    username = forms.CharField(
+        min_length=4,
+        max_length=150,
+        strip=True,
+        widget=forms.TextInput(attrs={
+            "placeholder": "Username",
+            "class": "form-control",
+            "autocomplete": "username"
+        })
+    )
+    
+    password = forms.CharField(
+        min_length=6,
+        widget=forms.PasswordInput(attrs={
+            "placeholder": "Password",
+            "class": "form-control",
+            "autocomplete": "current-password"
+        })
+    )
 
     def clean_username(self):
-        username= self.cleaned_data['username']
-        if len(username)<=3:
-            raise forms.ValidationError("Username length should be greater than 4")
+        username = self.cleaned_data.get('username')
+        if not username.isalnum():
+            raise forms.ValidationError("Username must be alphanumeric.")
         return username
 
-    def clean_password(self):
-        password = self.cleaned_data['password']
-        return password
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        password = cleaned_data.get('password')
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if not user:
+                raise forms.ValidationError("Invalid username or password.")
+
+            if not user.is_active:
+                raise forms.ValidationError("This account is inactive.")
+
+            # Store user for later use (optional)
+            self.user = user
+
+        return cleaned_data
